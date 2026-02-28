@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
+#include "Functions.hpp"
 using namespace std;
 
 int main(){
-    cout << "Olá Mundo!" <<endl;
-    return 0;
+    
 }
