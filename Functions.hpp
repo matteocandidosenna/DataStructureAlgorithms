@@ -55,6 +55,6 @@ class Hospicio{
 void showMenu(Hospicio &hosp);
 void inserirPaciente(Hospicio &hosp);
 void removerPaciente(Hospicio &hosp);
-void exibirPacientes(Hospicio &hosp);   
-void medicarPaciente(Hospicio &hosp);
+void exibirPacientes(Hospicio &hosp);
+void medicarPaciente(Hospicio &hosp);   
 #endif

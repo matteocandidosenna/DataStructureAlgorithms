@@ -16,7 +16,7 @@ int Grafo::src_pd(int u, int destino, int k, std::vector<std::vector<int>>& memo
 
     int menor_distancia = 1e7;
 
-    // 4. recusão: Tenta todos os vizinhos
+    //recusão tenta todos os vizinhos
     for (int vizinho : adj[u]) {
         int dist = 1 + src_pd(vizinho, destino, k - 1, memo);
         if (dist < menor_distancia) {
@@ -24,7 +24,7 @@ int Grafo::src_pd(int u, int destino, int k, std::vector<std::vector<int>>& memo
         }
     }
 
-    // 5. Salva na tabela e retorna
+    // salva na matriz e retorna
     return memo[u][k] = menor_distancia;
 }
 
@@ -51,7 +51,7 @@ void Grafo::adicionarCaminho(int u, int v) {
 }
 
 void Grafo::gerarRandomPath(int quantidade, unsigned int seed){
-    static std::mt19937 gen(seed); //segunda fase da aleatoriedade
+    static std::mt19937 gen(seed); //gerando aleatoriedade da seed
     uniform_int_distribution<int> dis(0, num_vertices - 1); //garante que o numero gerado esteja no intervalo valido
 
     int caminhosCriados = 0;
