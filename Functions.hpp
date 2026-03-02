@@ -19,21 +19,22 @@ class Paciente{
 
 class Quarto{
     public:
-    Paciente pac;
+    Paciente paciente;
     bool ocupado;
     
-    Quarto(Paciente pac, bool ocupado);
+    Quarto(Paciente paciente, bool ocupado);
 };
 
 class Hospicio{
     public:
     int num_pacientes;
-    int num_quartos_ocupados;
     vector<Quarto> quartos;
     
-    Hospicio(int num_pacientes, int num_quartos_ocupados, int qtd_quartos);
+    Hospicio(int num_quartos);
 };
 
-
+//Assinaturas
+void showMenu(Hospicio hosp);
+void inserirPaciente(Hospicio hosp);
 
 #endif
