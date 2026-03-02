@@ -21,7 +21,8 @@ Quarto::Quarto(Paciente paciente, bool ocupado){
     this->ocupado = ocupado;
 }
 
-Hospicio::Hospicio(int num_quartos){
+Hospicio::Hospicio(int num_quartos)
+    : grafo(num_quartos), num_pacientes(0){ //inicializando o grafo
     this->num_pacientes = 0;
     Paciente pac(0, 0, 0, "nenhum", "nenhum");
     Quarto qrt(pac, false);

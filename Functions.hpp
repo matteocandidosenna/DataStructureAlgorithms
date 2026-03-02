@@ -36,6 +36,7 @@ class Hospicio{
     public:
     int num_pacientes;
     vector<Quarto> quartos;
+    Grafo grafo;
     
     Hospicio(int num_quartos);
 };
