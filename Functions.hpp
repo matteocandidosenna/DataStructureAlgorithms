@@ -34,7 +34,8 @@ class Hospicio{
 };
 
 //Assinaturas
-void showMenu(Hospicio hosp);
-void inserirPaciente(Hospicio hosp);
-
+void showMenu(Hospicio &hosp);
+void inserirPaciente(Hospicio &hosp);
+void removerPaciente(Hospicio &hosp);
+void exibirPacientes(Hospicio &hosp);
 #endif
