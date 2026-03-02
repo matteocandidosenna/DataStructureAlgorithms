@@ -1,9 +1,16 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 #include <bits/stdc++.h>
-using namespace std;  
+using namespace std;
 
-//Construtores
+struct Grafo {
+    int num_vertices;
+    vector<vector<int>> adj;
+
+    Grafo(int n) : num_vertices(n), adj(n) {}
+
+    void adicionarCaminho(int u, int v);
+};
 
 class Paciente{
     public:

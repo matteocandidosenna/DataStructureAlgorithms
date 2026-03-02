@@ -2,6 +2,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+Grafo::Grafo(int n) : num_vertices(n), adj(n) {} 
+
+void Grafo::adicionarCaminho(int u, int v) {
+    adj[u].push_back(v);
+    adj[v].push_back(u); // Bidirecional, como um corredor
+}
+
 Paciente::Paciente(int id_paciente, int idade, int num_quarto, string nome, string diagnostico){
     this->id_paciente = id_paciente;
     this->num_quarto = num_quarto;
@@ -28,7 +35,7 @@ void showMenu(Hospicio &hosp){
     cout << "1. Cadastrar paciente" << endl;
     cout << "2. Listar Pacientes" << endl;
     cout << "3. Excluir Paciente" << endl;
-    cout << "4. Editar paciente" <<endl;
+    cout << "4. " <<endl;
     cout << "0. Sair" <<endl;
     int op;
     cin >> op;
