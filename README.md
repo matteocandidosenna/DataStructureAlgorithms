@@ -107,3 +107,23 @@ void Grafo::exibirCaminhoPD(int u, int destino, int k, std::vector<std::vector<i
     }
 }
 ```
+Exemplo de execução:
+```txt
+=== Hospicio Holstenwall === 
+1. Cadastrar paciente        
+2. Listar Pacientes
+3. Excluir Paciente
+4. Mostrar o Mapa do Hospicio
+5. Medicar paciente
+0. Sair
+5
+Escolhe um quarto entre 0 e 50 no qual desejas medicar o paciente: 49
+
+Digite o seu ponto de partida: 3
+
+Digite a sua stamina, quantos corredores / tuneis voce quer andar no maximo: 100
+
+Caminho encontrado com 4 tuneis/corredores
+ROTA: 3 -> 4 -> 5 -> 6 -> 49
+````
+
