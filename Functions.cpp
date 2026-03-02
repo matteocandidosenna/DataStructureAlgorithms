@@ -5,8 +5,45 @@ using namespace std;
 Grafo::Grafo(int n) : num_vertices(n), adj(n) {} 
 
 void Grafo::adicionarCaminho(int u, int v) {
-    adj[u].push_back(v);
-    adj[v].push_back(u); // Bidirecional, como um corredor
+    adj[u].push_back(v); //unidirecional, propicio para PD
+}
+
+void Grafo::gerarRandomPath(int quantidade){
+    static std::random_device rd; //primeira fase da aleatoriedade
+    static std::mt19937 gen(rd()); //segunda fase da aleatoriedade
+    uniform_int_distribution<int> dis(0, num_vertices - 1); //garante que o numero gerado esteja no intervalo valido
+
+    int caminhosCriados = 0;
+    while(caminhosCriados < quantidade){
+        int u = dis(gen); // sorteia o primeiro quarto
+        int v = dis(gen); // sorteia o segundo quarto
+
+        //evitando ciclos
+        if(u < v){
+            adicionarCaminho(u, v);
+            caminhosCriados++;
+        }
+    }
+}
+
+void Grafo::printAdjacencias(){
+    cout << endl << "--- Mapa de Conexões do Hospício: ---" <<endl;
+
+    for(int i = 0; i < num_vertices; i++){
+
+        //numero do quarto atual
+        cout << "Quarto [" << i << "]: ";
+
+        //percorre lista de vizinhos do quarto i
+        for(int vizinho : adj[i]){
+            cout << "-> " << vizinho <<" ";
+        }
+
+        //se o quarto não possuir vizinhos
+        if(adj[i].empty()) cout << "(Isolado)";
+        cout << endl;
+    }
+    cout << "----------------------------------" << endl << endl;
 }
 
 Paciente::Paciente(int id_paciente, int idade, int num_quarto, string nome, string diagnostico){
@@ -23,6 +60,9 @@ Quarto::Quarto(Paciente paciente, bool ocupado){
 
 Hospicio::Hospicio(int num_quartos)
     : grafo(num_quartos), num_pacientes(0){ //inicializando o grafo
+    for (int i = 0; i < num_quartos - 1; i++) {
+        grafo.adicionarCaminho(i, i + 1); // garante pelo menos um corredor entre cada quarto
+    }    
     this->num_pacientes = 0;
     Paciente pac(0, 0, 0, "nenhum", "nenhum");
     Quarto qrt(pac, false);
@@ -36,7 +76,7 @@ void showMenu(Hospicio &hosp){
     cout << "1. Cadastrar paciente" << endl;
     cout << "2. Listar Pacientes" << endl;
     cout << "3. Excluir Paciente" << endl;
-    cout << "4. " <<endl;
+    cout << "4. Mostrar o Mapa do Hospicio" <<endl;
     cout << "0. Sair" <<endl;
     int op;
     cin >> op;
@@ -54,6 +94,11 @@ void showMenu(Hospicio &hosp){
         case 3:{
             removerPaciente(hosp);
             break;
+        }
+
+        case 4:{
+            hosp.grafo.printAdjacencias();
+            showMenu(hosp);
         }
 
         case 0: return;
@@ -157,3 +202,5 @@ void exibirPacientes(Hospicio &hosp){
     cout << endl;
     showMenu(hosp);
 }
+
+

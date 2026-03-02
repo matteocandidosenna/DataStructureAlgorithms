@@ -7,9 +7,11 @@ struct Grafo {
     int num_vertices;
     vector<vector<int>> adj;
 
-    Grafo(int n) : num_vertices(n), adj(n) {}
+    Grafo(int n);
 
     void adicionarCaminho(int u, int v);
+    void gerarRandomPath(int quantidade);
+    void printAdjacencias();
 };
 
 class Paciente{
@@ -46,4 +48,5 @@ void showMenu(Hospicio &hosp);
 void inserirPaciente(Hospicio &hosp);
 void removerPaciente(Hospicio &hosp);
 void exibirPacientes(Hospicio &hosp);
+void gerarRandomPath(Grafo &graf);
 #endif
