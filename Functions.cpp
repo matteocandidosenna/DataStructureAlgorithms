@@ -2,6 +2,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+Farmacia::Farmacia(){
+    remedios = {"Fluoxetina",
+    "Sertralina",
+    "Escitalopram",
+    "Venlafaxina",
+    "Bupropiona",
+    "Paroxetina",
+    "Amitriptilina",
+    "Clonazepam",
+    "Diazepam",
+    "Alprazolam",
+    "Lorazepam",
+    "Quetiapina",
+    "Risperidona",
+    "Olanzapina",
+    "Aripiprazol",
+    "Carbonato de lítio",
+    "Valproato",
+    "Lamotrigina",
+    "Gardenal",
+    "Rivotril"};
+}
+
 Grafo::Grafo(int n) : num_vertices(n), adj(n) {} 
 
 int Grafo::src_pd(int u, int destino, int k, std::vector<std::vector<int>>& memo) {
@@ -100,7 +123,7 @@ Quarto::Quarto(Paciente paciente, bool ocupado){
 }
 
 Hospicio::Hospicio(int num_quartos)
-    : grafo(num_quartos), num_pacientes(0){ //inicializando o grafo
+    : grafo(num_quartos), num_pacientes(0), farm(){ //inicializando o grafo e a farmacia
     for (int i = 0; i < num_quartos - 1; i++) {
         grafo.adicionarCaminho(i, i + 1); // garante pelo menos um corredor entre cada quarto
     }    
@@ -109,52 +132,60 @@ Hospicio::Hospicio(int num_quartos)
     Quarto qrt(pac, false);
     quartos.assign(num_quartos, qrt);
     // cria um hospicio com quartos padrão contendo pacientes padrão
+
+    //inicializando o log
+    log = "";
+    
 }
 
 //Menu
 void showMenu(Hospicio &hosp){
-    cout << "=== Hospicio Holstenwall ===" << endl;
-    cout << "1. Cadastrar paciente" << endl;
-    cout << "2. Listar Pacientes" << endl;
-    cout << "3. Excluir Paciente" << endl;
-    cout << "4. Mostrar o Mapa do Hospicio" <<endl;
-    cout << "5. Medicar paciente" <<endl;
-    cout << "0. Sair" <<endl;
     int op;
-    cin >> op;
-
-    switch(op){
-        case 1:{
-            inserirPaciente(hosp);
+    while(true){
+        cout << "=== Hospicio Holstenwall ===" << endl;
+        cout << "1. Cadastrar paciente" << endl;
+        cout << "2. Listar Pacientes" << endl;
+        cout << "3. Excluir Paciente" << endl;
+        cout << "4. Mostrar o Mapa do Hospicio" <<endl;
+        cout << "5. Medicar Paciente (percorrer grafos com PD)" <<endl;
+        cout << "6. Exbir log do Hospicio" <<endl;
+        cout << "7. O Problema do Louco que arrasou a farmacia" <<endl;
+        cout << "0. Sair" <<endl;
+        cin >> op;
+        
+        if(op == 0){
+            cout << "Encerrando..." << endl;
             break;
         }
-        case 2:{
-            exibirPacientes(hosp);
-            break;
-        }
 
-        case 3:{
-            removerPaciente(hosp);
-            break;
-        }
-
-        case 4:{
-            hosp.grafo.printAdjacencias();
-            showMenu(hosp);
-        }
-
-        case 5:{
-            medicarPaciente(hosp);
-            showMenu(hosp);
-        }
-
-        case 0: return;
-
-        default:{
-            cout << "Digite um numero valido! "<<endl;
-            showMenu(hosp);
+        switch(op){
+            case 1:{
+                inserirPaciente(hosp);
+                break;
+            }case 2:{
+                exibirPacientes(hosp);
+                break;
+            }case 3:{
+                removerPaciente(hosp);
+                break;
+            } case 4:{
+                hosp.grafo.printAdjacencias();
+                break;
+            }case 5:{
+                medicarPaciente(hosp);
+                break;
+            }case 6:{
+                exibirLog(hosp);
+            }case 7:{
+                farmaciaArrasada(hosp);
+            }
+            default:{
+                cout << "Digite um numero valido! "<<endl;
+                break;
+            }
         }
     }
+    return;
 }
 
 void inserirPaciente(Hospicio &hosp){
@@ -200,7 +231,11 @@ void inserirPaciente(Hospicio &hosp){
 
     hosp.num_pacientes++;
     cout << endl;
-    showMenu(hosp);
+
+    //registrando o paciente no log
+    hosp.log += "[INSERCAO]: \nNome: " +pac.nome + "\nIdade: "+to_string(pac.idade) + 
+    "\nDiagnostico: "+pac.diagnostico+"\n------------\n";
+    return;
 }
 
 void removerPaciente(Hospicio &hosp){
@@ -217,8 +252,10 @@ void removerPaciente(Hospicio &hosp){
     
     //busca sequencial
     bool encontrado = false;
+    string nome;
     for(int i =0; i < hosp.quartos.size(); i++){
          if(hosp.quartos[i].ocupado && hosp.quartos[i].paciente.id_paciente == id){
+            nome = hosp.quartos[i].paciente.nome;
             hosp.quartos[i].ocupado = false;
             hosp.quartos[i].ocupado = false;
             Paciente pac(0, 0, 0, "nenhum", "nenhum");
@@ -228,13 +265,17 @@ void removerPaciente(Hospicio &hosp){
         }
     }
     if(!encontrado) cout << "Paciente nao encontrado!" << endl <<endl;
-    showMenu(hosp);
+    else{
+        hosp.log += "[ALTA]: \nNome: " +nome +"\n------------\n";
+        return;
+    }
+    return;
 }
 
 void exibirPacientes(Hospicio &hosp){
     if(hosp.num_pacientes == 0){
         cout << "Nao ha pacientes internados! " <<endl;
-        showMenu(hosp);
+        return;
     }
     else{
         for(const auto &elemento : hosp.quartos){
@@ -247,7 +288,7 @@ void exibirPacientes(Hospicio &hosp){
     }
     
     cout << endl;
-    showMenu(hosp);
+    return;
 }
 
 void medicarPaciente(Hospicio &hosp){
@@ -261,7 +302,7 @@ void medicarPaciente(Hospicio &hosp){
     cin>>ptp;
     cout << endl;
 
-    cout <<"Dogite a sua stamina, quantos corredores / tuneis voce quer andar no maximo";
+    cout <<"Digite a sua stamina, quantos corredores / tuneis voce quer andar no maximo: ";
     int stm;
     cin>>stm;
     cout <<endl;
@@ -270,7 +311,7 @@ void medicarPaciente(Hospicio &hosp){
     int distancia = hosp.grafo.src_pd(ptp, nqt, stm, memo);
 
     if(distancia >= 1e7){
-        cout << "Nao ha caminho, o paciente está fora de alcance com essa stamina!" <<endl;
+        cout << "Nao ha caminho, o paciente esta fora de alcance com essa stamina!" <<endl;
     }else{
         cout << "Caminho encontrado com " << distancia << " tuneis/corredores " << endl;
         cout << "ROTA: ";
@@ -278,4 +319,66 @@ void medicarPaciente(Hospicio &hosp){
         cout << nqt;
         cout <<endl;
     }
+    return;
+}
+
+void exibirLog(Hospicio &hosp){
+    cout << hosp.log << endl;
+    return;
+}
+
+void farmaciaArrasada(Hospicio &hosp){
+    //aleatoriedade
+    random_device rd;
+    mt19937 g(rd());
+    shuffle(hosp.farm.remedios.begin(), hosp.farm.remedios.end(), g); //embaralhando o vetor
+
+    cout << "O louco fugiu do quarto e baguncou os medicamentos da farmacia! Escolha entre busca sequencial" <<
+    "ou binaria para encontrar os remedios: " <<endl;
+
+    cout << "1. Busca sequencial" << endl;
+    cout << "2. Busca binaria" << endl;
+
+    int op;
+    cin >> op;
+
+    if(op == 1){
+        cout << "Digite o nome do remedio (indicado pelo manual de uso do software (documentação)): " << endl;
+        string remedio;
+        cin.ignore();
+        getline(cin, remedio);
+        for(int i = 0; i < hosp.farm.remedios.size(); i++){
+            if(remedio == hosp.farm.remedios[i]) cout << "remedio encontrado na prateleira " << i <<endl;
+            break;
+        }
+        cout << "Remedio nao encontrado! " <<endl;
+    }
+    else if(op == 2){
+        cout << "Digite o nome do remedio (indicado pelo manual de uso do software (documentação)): " << endl;
+        cin.ignore();
+        string remedio;
+        getline(cin, remedio);
+        sort(hosp.farm.remedios.begin(), hosp.farm.remedios.end());
+        int esquerda = 0;
+        int direita = hosp.farm.remedios.size() - 1;
+
+        while(esquerda <= direita){
+            int meio = esquerda + (direita - esquerda) / 2;
+
+            if(hosp.farm.remedios[meio] == remedio){
+                cout << "Remedio encontrado e pronto para ser usado num paciente!" << endl;
+                break;
+            }
+            else if(hosp.farm.remedios[meio] < remedio) esquerda = meio + 1;
+            else direita = meio -1;
+        }
+        cout << "Remedio nao encontrado! " << endl;
+        return;
+    }
+
+    else{
+        cout << "Opcao invalida! Retornando ao menu... " << endl;
+    }
+
+    return;
 }

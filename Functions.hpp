@@ -3,7 +3,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Grafo {
+struct Grafo{
     int num_vertices;
     vector<vector<int>> adj;
 
@@ -20,6 +20,12 @@ struct Grafo {
     // memo -> matriz de memorização
 
     void exibirCaminhoPD(int u, int destino, int k, std::vector<std::vector<int>>& memo);
+};
+
+class Farmacia{
+    public:
+    vector<string> remedios;
+    Farmacia();
 };
 
 class Paciente{
@@ -47,6 +53,8 @@ class Hospicio{
     int num_pacientes;
     vector<Quarto> quartos;
     Grafo grafo;
+    string log;
+    Farmacia farm;
     
     Hospicio(int num_quartos);
 };
@@ -57,4 +65,6 @@ void inserirPaciente(Hospicio &hosp);
 void removerPaciente(Hospicio &hosp);
 void exibirPacientes(Hospicio &hosp);
 void medicarPaciente(Hospicio &hosp);   
+void exibirLog(Hospicio &hosp);
+void farmaciaArrasada(Hospicio &hosp);
 #endif
