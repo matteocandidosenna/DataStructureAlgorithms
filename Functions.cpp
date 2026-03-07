@@ -176,8 +176,10 @@ void showMenu(Hospicio &hosp){
                 break;
             }case 6:{
                 exibirLog(hosp);
+                break;
             }case 7:{
                 farmaciaArrasada(hosp);
+                break;
             }
             default:{
                 cout << "Digite um numero valido! "<<endl;
@@ -190,12 +192,12 @@ void showMenu(Hospicio &hosp){
 
 void inserirPaciente(Hospicio &hosp){
     if(hosp.num_pacientes == hosp.quartos.size()){
-        cout << "Hospicio cheio, nao ha vagas mais!" << endl;
+        cout << endl << "Hospicio cheio, nao ha vagas mais!" << endl;
         return;
     }
 
     Paciente pac;
-    cout << "Digite o numero do quarto em que deseja alocar o paciente (entre 0 e " << hosp.quartos.size() << ") " << endl;
+    cout << endl << "Digite o numero do quarto em que deseja alocar o paciente (entre 0 e " << hosp.quartos.size() << ") " << endl;
     int num_qt;
     cin >> num_qt;
     if(num_qt < 0 || num_qt >= hosp.quartos.size() || hosp.quartos[num_qt].ocupado){
@@ -333,7 +335,7 @@ void farmaciaArrasada(Hospicio &hosp){
     mt19937 g(rd());
     shuffle(hosp.farm.remedios.begin(), hosp.farm.remedios.end(), g); //embaralhando o vetor
 
-    cout << "O louco fugiu do quarto e baguncou os medicamentos da farmacia! Escolha entre busca sequencial" <<
+    cout << endl << "Um louco fugiu do quarto e baguncou os medicamentos da farmacia! Escolha entre busca sequencial" <<
     "ou binaria para encontrar os remedios: " <<endl;
 
     cout << "1. Busca sequencial" << endl;
@@ -343,36 +345,41 @@ void farmaciaArrasada(Hospicio &hosp){
     cin >> op;
 
     if(op == 1){
-        cout << "Digite o nome do remedio (indicado pelo manual de uso do software (documentação)): " << endl;
+        cout << "Digite o nome do remedio (indicado pelo manual de uso do software (documentacao)): " << endl;
         string remedio;
         cin.ignore();
         getline(cin, remedio);
+        bool flag;
         for(int i = 0; i < hosp.farm.remedios.size(); i++){
-            if(remedio == hosp.farm.remedios[i]) cout << "remedio encontrado na prateleira " << i <<endl;
-            break;
+            if(remedio == hosp.farm.remedios[i]){
+                cout << "remedio encontrado na prateleira " << i << endl <<endl;
+                flag = true;
+                break;
+            } 
         }
-        cout << "Remedio nao encontrado! " <<endl;
+        if(!flag) cout << "Remedio nao encontrado! " << endl <<endl;
     }
     else if(op == 2){
-        cout << "Digite o nome do remedio (indicado pelo manual de uso do software (documentação)): " << endl;
+        cout << "Digite o nome do remedio (indicado pelo manual de uso do software (documentacao)): " << endl;
         cin.ignore();
         string remedio;
         getline(cin, remedio);
         sort(hosp.farm.remedios.begin(), hosp.farm.remedios.end());
         int esquerda = 0;
         int direita = hosp.farm.remedios.size() - 1;
-
+        bool flag = false;
         while(esquerda <= direita){
             int meio = esquerda + (direita - esquerda) / 2;
 
             if(hosp.farm.remedios[meio] == remedio){
-                cout << "Remedio encontrado e pronto para ser usado num paciente!" << endl;
+                cout << "Remedio encontrado e pronto para ser usado num paciente!" << endl << endl;
+                flag= true;
                 break;
             }
             else if(hosp.farm.remedios[meio] < remedio) esquerda = meio + 1;
             else direita = meio -1;
         }
-        cout << "Remedio nao encontrado! " << endl;
+        if(!flag) cout << "Remedio nao encontrado! " << endl <<endl;
         return;
     }
 
