@@ -2,6 +2,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+//Métodos de Classes
+
 Farmacia::Farmacia(){
     remedios = {"Fluoxetina",
     "Sertralina",
@@ -25,7 +27,24 @@ Farmacia::Farmacia(){
     "Rivotril"};
 }
 
-Grafo::Grafo(int n) : num_vertices(n), adj(n) {} 
+void Hospicio::inserirTabela(string nome_paciente){ //junto com insercao do paciente
+    int hash = 0;
+    for(auto var : nome_paciente) hash +=(unsigned int)var;
+    tabela_hash[hash%tabela_hash.size()].push_back(nome_paciente);
+}
+
+void Hospicio::removerTabela(string nome_paciente) {
+    int hash = 0;
+    for(auto var : nome_paciente) hash += (unsigned int)var;
+    
+    int indice = hash % tabela_hash.size();
+    
+    tabela_hash[indice][0] = "";
+    tabela_hash[indice][1] = "vazio"; 
+}
+
+
+Grafo::Grafo(int n) : num_vertices(n), adj(n) {}
 
 int Grafo::src_pd(int u, int destino, int k, std::vector<std::vector<int>>& memo) {
     //caso Base: Chegou no destino? Distância é zero.
@@ -123,7 +142,7 @@ Quarto::Quarto(Paciente paciente, bool ocupado){
 }
 
 Hospicio::Hospicio(int num_quartos)
-    : grafo(num_quartos), num_pacientes(0), farm(){ //inicializando o grafo e a farmacia
+    : grafo(num_quartos), num_pacientes(0), farm(), tabela_hash(num_quartos){ //inicializando o grafo e a farmacia
     for (int i = 0; i < num_quartos - 1; i++) {
         grafo.adicionarCaminho(i, i + 1); // garante pelo menos um corredor entre cada quarto
     }    
@@ -138,7 +157,7 @@ Hospicio::Hospicio(int num_quartos)
     
 }
 
-//Menu
+//Outras funcoes
 void showMenu(Hospicio &hosp){
     int op;
     while(true){
@@ -237,6 +256,8 @@ void inserirPaciente(Hospicio &hosp){
     //registrando o paciente no log
     hosp.log += "[INSERCAO]: \nNome: " +pac.nome + "\nIdade: "+to_string(pac.idade) + 
     "\nDiagnostico: "+pac.diagnostico+"\n------------\n";
+
+    hosp.inserirTabela(name);
     return;
 }
 
@@ -269,6 +290,7 @@ void removerPaciente(Hospicio &hosp){
     if(!encontrado) cout << "Paciente nao encontrado!" << endl <<endl;
     else{
         hosp.log += "[ALTA]: \nNome: " +nome +"\n------------\n";
+        hosp.removerTabela(nome);
         return;
     }
     return;

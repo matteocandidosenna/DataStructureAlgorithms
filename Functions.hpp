@@ -55,8 +55,11 @@ class Hospicio{
     Grafo grafo;
     string log;
     Farmacia farm;
+    vector<vector<string>> tabela_hash;
     
     Hospicio(int num_quartos);
+    void inserirTabela(string nome_paciente);
+    void removerTabela(string nome_paciente);
 };
 
 //Assinaturas
