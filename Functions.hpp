@@ -3,6 +3,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct TabelaHash{
+    vector<vector<string>> table;
+
+    TabelaHash(int num_loucos);
+    int funcaoHash(string nome);
+    void inserirTabela(string nome);
+    void removerTabela(string nome);
+};
+
 struct Grafo{
     int num_vertices;
     vector<vector<int>> adj;
@@ -55,11 +64,9 @@ class Hospicio{
     Grafo grafo;
     string log;
     Farmacia farm;
-    vector<vector<string>> tabela_hash;
+    TabelaHash table_hash;
     
     Hospicio(int num_quartos);
-    void inserirTabela(string nome_paciente);
-    void removerTabela(string nome_paciente);
 };
 
 //Assinaturas
