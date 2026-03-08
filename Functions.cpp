@@ -4,29 +4,6 @@ using namespace std;
 
 //Métodos de Classes
 
-Farmacia::Farmacia(){
-    remedios = {"Fluoxetina",
-    "Sertralina",
-    "Escitalopram",
-    "Venlafaxina",
-    "Bupropiona",
-    "Paroxetina",
-    "Amitriptilina",
-    "Clonazepam",
-    "Diazepam",
-    "Alprazolam",
-    "Lorazepam",
-    "Quetiapina",
-    "Risperidona",
-    "Olanzapina",
-    "Aripiprazol",
-    "Carbonato de lítio",
-    "Valproato",
-    "Lamotrigina",
-    "Gardenal",
-    "Rivotril"};
-}
-
 void Hospicio::inserirTabela(string nome_paciente){ //junto com insercao do paciente
     int hash = 0;
     for(auto var : nome_paciente) hash +=(unsigned int)var;
@@ -42,9 +19,6 @@ void Hospicio::removerTabela(string nome_paciente) {
     tabela_hash[indice][0] = "";
     tabela_hash[indice][1] = "vazio"; 
 }
-
-
-Grafo::Grafo(int n) : num_vertices(n), adj(n) {}
 
 int Grafo::src_pd(int u, int destino, int k, std::vector<std::vector<int>>& memo) {
     //caso Base: Chegou no destino? Distância é zero.
@@ -142,7 +116,7 @@ Quarto::Quarto(Paciente paciente, bool ocupado){
 }
 
 Hospicio::Hospicio(int num_quartos)
-    : grafo(num_quartos), num_pacientes(0), farm(), tabela_hash(num_quartos){ //inicializando o grafo e a farmacia
+    : grafo(num_quartos), num_pacientes(0), farm(), tabela_hash(num_quartos*2){ //inicializando o grafo e a farmacia
     for (int i = 0; i < num_quartos - 1; i++) {
         grafo.adicionarCaminho(i, i + 1); // garante pelo menos um corredor entre cada quarto
     }    
@@ -157,13 +131,38 @@ Hospicio::Hospicio(int num_quartos)
     
 }
 
+Grafo::Grafo(int n) : num_vertices(n), adj(n) {}
+
+Farmacia::Farmacia(){
+    remedios = {"Fluoxetina",
+    "Sertralina",
+    "Escitalopram",
+    "Venlafaxina",
+    "Bupropiona",
+    "Paroxetina",
+    "Amitriptilina",
+    "Clonazepam",
+    "Diazepam",
+    "Alprazolam",
+    "Lorazepam",
+    "Quetiapina",
+    "Risperidona",
+    "Olanzapina",
+    "Aripiprazol",
+    "Carbonato de lítio",
+    "Valproato",
+    "Lamotrigina",
+    "Gardenal",
+    "Rivotril"};
+}
+
 //Outras funcoes
 void showMenu(Hospicio &hosp){
     int op;
     while(true){
         cout << "=== Hospicio Holstenwall ===" << endl;
         cout << "1. Cadastrar paciente" << endl;
-        cout << "2. Listar Pacientes" << endl;
+        cout << "2. Listar Pacientes (com Tabela Hash)" << endl;
         cout << "3. Excluir Paciente" << endl;
         cout << "4. Mostrar o Mapa do Hospicio" <<endl;
         cout << "5. Medicar Paciente (percorrer grafos com PD)" <<endl;
@@ -290,7 +289,7 @@ void removerPaciente(Hospicio &hosp){
     if(!encontrado) cout << "Paciente nao encontrado!" << endl <<endl;
     else{
         hosp.log += "[ALTA]: \nNome: " +nome +"\n------------\n";
-        hosp.removerTabela(nome);
+        
         return;
     }
     return;
