@@ -3,6 +3,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct NoHuffman{
+    char caractere;
+    int freq;
+    NoHuffman* esquerda;
+    NoHuffman* direita;
+
+    NoHuffman(char c, int f) : caractere(c), freq(f), esquerda(nullptr), direita(nullptr){}
+};
+
+struct ComparaNo{
+    bool operator()(NoHuffman* a, NoHuffman* b){ //operator(): Permite que o objeto seja "chamado" como se fosse uma função (ex: objeto(a, b)).
+        return a -> freq > b -> freq;
+    }
+};
+
+class Huffman{
+    private: 
+    NoHuffman* raiz;
+    map<char, string> codigos;
+    
+    void gerarCodigos(NoHuffman* no, string codigo);
+    void destruir(NoHuffman* no);
+
+    public:
+    Huffman();
+    ~Huffman(); //~ é um destrutor Definir funções que limpam recursos de um objeto antes dele ser deletado
+
+    string comprimir(const string& texto);
+    void salvar(const string& nomeArquivo, const string& texto);
+    string carregar(const string& nomeArquivo);
+
+};
+
 struct TabelaHash{
     vector<vector<string>> table;
 
@@ -14,21 +47,32 @@ struct TabelaHash{
 
 struct Grafo{
     int num_vertices;
-    vector<vector<int>> adj;
+    vector<vector<pair<int, int>>> adj;
 
     Grafo(int n);
 
-    void adicionarCaminho(int u, int v);
+    void adicionarCaminho(int u, int v, int peso);
     void gerarRandomPath(int quantidade, unsigned int seed);
-    void printAdjacencias();
+    void printAdjacencias();//lista
+    void printMatrizAdjacencia();
 
-    int src_pd(int u, int destino, int k, std::vector<std::vector<int>>& memo); //numero de corredores do caminho mais curto
+    int src_pd(int u, int destino, int k, vector<vector<int>>& memo); //numero de corredores do caminho mais curto
     // u -> onde estou
     // destino -> para onde vou
     // k -> quanto folego resta
     // memo -> matriz de memorização
 
-    void exibirCaminhoPD(int u, int destino, int k, std::vector<std::vector<int>>& memo);
+    void exibirCaminhoPD(int u, int destino, int k, vector<vector<int>>& memo);
+
+
+    //BFS
+    void bfs(int origem, int destino);
+
+    //DFS
+    void rondaVigia(int origem);
+
+    //DIJSKTRA
+    void dijkstra(int origem, int destino);
 };
 
 class Farmacia{
@@ -67,6 +111,9 @@ class Hospicio{
     TabelaHash table_hash;
     
     Hospicio(int num_quartos);
+    void salvarLogComprimido();
+    void carregarLogComprimido();
+    void buscarNoLog();
 };
 
 //Assinaturas
@@ -77,4 +124,5 @@ void exibirPacientes(Hospicio &hosp);
 void medicarPaciente(Hospicio &hosp);   
 void exibirLog(Hospicio &hosp);
 void farmaciaArrasada(Hospicio &hosp);
+vector<int> buscarRabinKarp(const string& texto, const string& padrao);
 #endif
