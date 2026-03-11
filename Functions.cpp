@@ -682,7 +682,7 @@ void showMenu(Hospicio &hosp){
         cout << "=== Hospicio Holstenwall ===" << endl;
         cout << "1. Cadastrar paciente (Hash)" << endl;
         cout << "2. Listar Pacientes (com Tabela Hash)" << endl;
-        cout << "3. Excluir Paciente" << endl;
+        cout << "3. Excluir Paciente (Hash)" << endl;
         cout << "4. Mostrar o Mapa do Hospicio (Lista ou Matriz adj)" <<endl;
         cout << "5. Medicar Paciente (percorrer grafos com PD)" <<endl;
         cout << "6. Exbir log do Hospicio" <<endl;
@@ -692,7 +692,7 @@ void showMenu(Hospicio &hosp){
         cout << "10. Buscar no log (Rabin-Karp)" << endl;
         cout << "11. BFS - encontrar menor numero de corredores entre dois quartos"<<endl;
         cout << "12. Ronda completa do guarda (DFS) - explorar todos os quartos" << endl;
-        cout << "13. Encontrar o melhor caminho entre dois quartos" <<endl;
+        cout << "13. Encontrar o melhor caminho entre dois quartos com Dijkstra" <<endl;
         cout << "0. Sair" <<endl;
         cin >> op;
         
